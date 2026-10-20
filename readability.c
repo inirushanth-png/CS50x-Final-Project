@@ -11,6 +11,10 @@ int count_sentences(string sentences);
 int main(void)
 {
     string text=get_string("Text:  ");
+    if(text==NULL)
+    {
+        return 0;
+    }
 
     int score1= count_letters(text);
     int score2= count_words(text);
@@ -64,7 +68,8 @@ int main(void)
      int count_sentences(string sentences)
       {
         int count=0;
-      for(int i=0,n=strlen(sentences); i<n; i++)
+
+        for(int i=0,n=strlen(sentences); i<n; i++)
       {
         if(sentences[i]=='.' || sentences[i]=='!' || sentences[i]=='?' )
         {
