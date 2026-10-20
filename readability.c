@@ -54,6 +54,10 @@ int main(void)
 
      int count_words(string words)
      {
+        if (words[0]== '\0')
+        {
+            return 0;
+        }
       int count=1;
       for(int i=0,N=strlen(words); i<N; i++)
       {
