@@ -50,7 +50,7 @@ int main(void)
 
      int count_words(string words)
      {
-      int count=0;
+      int count=1;
       for(int i=0,N=strlen(words); i<N; i++)
       {
          if(words[i]==' ')
