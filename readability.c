@@ -20,12 +20,6 @@ int main(void)
     int score2= count_words(text);
     int score3= count_sentences(text);
 
-    if(score==0)
-    {
-        printf("Before Grade 1\n");
-        return 0;
-    }
-
     float L=(float)  score1 / score2* 100;
     float S=(float)  score3 / score2* 100;
 
@@ -38,7 +32,7 @@ int main(void)
     }
     else if(grade<1)
     {
-     printf("Before Grade 1\n ");
+     printf("Before Grade 1\n");
     }
     else
     {
