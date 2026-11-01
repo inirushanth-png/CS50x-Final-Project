@@ -26,17 +26,19 @@ int main(int argc, char *argv[])
     FILE *img=NULL;
     int file_count = 0;
     char filename[8];
+    
    while (fread(buffer,1,512,card)==512)
    {
    if(buffer[0] == 0xff && buffer[1] == 0xd8 && buffer[2] == 0xff && (buffer[3] & 0xf0) == 0xe0)
 {
-   if (img!=NULL)
+       if (img!=NULL)
         {
           fclose(img);
         }
 
 
-    sprintf(filename, "%03i.jpg",file_count++);
+    sprintf(filename, "%03i.jpg",file_count);
+    file_count++;
       img=fopen(filename,"w");
     }
      if (img!=NULL)
@@ -44,8 +46,13 @@ int main(int argc, char *argv[])
           fwrite(buffer,1,512,img);
         }
 }
+    if (img!= NULL)
+    {
+    fclose(img);
+    }
+
     fclose(card);
     return 0;
 
-     
+
 }
