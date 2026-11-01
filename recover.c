@@ -43,13 +43,9 @@ int main(int argc, char *argv[])
         {
           fwrite(buffer,1,512,img);
         }
-        if (img!=NULL)
-        {
-          fclose(img);
-        }
 }
     fclose(card);
     return 0;
 
-        // Create JPEGs from the data
+     
 }
