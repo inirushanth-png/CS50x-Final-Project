@@ -1,10 +1,10 @@
 // Implements a dictionary's functionality
+#include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include <ctype.h>
-#include <stdbool.h>
 
 #include "dictionary.h"
 
@@ -18,7 +18,7 @@ typedef struct node
 // TODO: Choose number of buckets in hash table
 const unsigned int N = 26;
 
-int word_count =0;
+int word_count = 0;
 
 // Hash table
 node *table[N];
@@ -27,9 +27,9 @@ node *table[N];
 bool check(const char *word)
 {
     unsigned int index = hash(word);
-    for(node *ptr = table[index]; ptr != NULL; ptr = ptr->next)
+    for (node *ptr = table[index]; ptr != NULL; ptr = ptr->next)
     {
-        if(strcasecmp(ptr->word, word)==0)
+        if (strcasecmp(ptr->word, word) == 0)
         {
             return true;
         }
@@ -38,59 +38,58 @@ bool check(const char *word)
 }
 unsigned int hash(const char *word)
 {
-    unsigned int sum= 0;
-    for( int i =0; word[i] != '\0'; i++)
+    unsigned int sum = 0;
+    for (int i = 0; word[i] != '\0'; i++)
     {
         sum += tolower(word[i]);
     }
     return sum % N;
 }
 
-
 bool load(const char *dictionary)
 {
     FILE *file = fopen(dictionary, "r");
-    if(file == NULL)
-{
-     return false;
-}
-
-   char word[LENGTH + 1];
-   while(fscanf(file, "%s", word) != EOF)
-   {
-    node *n = malloc(sizeof(node));
-    if (n == NULL)
+    if (file == NULL)
     {
-        fclose(file);
         return false;
     }
 
-    strcpy(n->word, word);
-    unsigned int index = hash(word);
-    n->next = table[index];
-    table[index] =n;
-    word_count++;
-   }
-     fclose(file);
-      return true;
+    char word[LENGTH + 1];
+    while (fscanf(file, "%s", word) != EOF)
+    {
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            fclose(file);
+            return false;
+        }
+
+        strcpy(n->word, word);
+        unsigned int index = hash(word);
+        n->next = table[index];
+        table[index] = n;
+        word_count++;
+    }
+    fclose(file);
+    return true;
 }
-     unsigned int size(void)
-     {
-        return word_count;
-     }
+unsigned int size(void)
+{
+    return word_count;
+}
 
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void)
 {
     // TODO
-    for (int i=0; i<N; i++)
+    for (int i = 0; i < N; i++)
     {
         node *ptr = table[i];
         while (ptr != NULL)
         {
             node *next = ptr->next;
             free(ptr);
-            ptr=next;
+            ptr = next;
         }
     }
     return true;
