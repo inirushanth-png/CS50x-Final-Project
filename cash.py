@@ -2,8 +2,8 @@ from cs50 import get_float
 
 while True:
     change = get_float("Change: ")
-    if 0<= change:
-      break
+    if 0 <= change:
+        break
 
 cents = round(change*100)
 
@@ -20,7 +20,5 @@ nickbalance = dimesbalance % 5
 pennies = (nickbalance)//1
 last = nickbalance % 1
 
-total_coins = quarters + dimes + nickels +pennies
+total_coins = quarters + dimes + nickels + pennies
 print(total_coins)
-
-
