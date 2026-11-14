@@ -1,0 +1,6 @@
+1. Audio Aura:
+Based on the average energy, valence, and danceability of these top 100 songs, the listener's audio aura feels upbeat, energetic, and lively, reflecting a positive and active mood.
+
+2. Limitations and better approaches:
+Taking a simple average across all 100 songs treats every track equally, even if the listener replayed one song hundreds of times or skipped through others quickly. It also ignores time of day and listening duration. A better approach would be to weight each song by play count or total minutes listened, and group moods by time of day or top artists.
+
