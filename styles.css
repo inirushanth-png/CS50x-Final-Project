@@ -1,0 +1,27 @@
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 0;
+    text-align: left;
+}
+
+h1{
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+main{
+    padding:16px
+}
+
+button{
+    margin-right: 8px;
+}
+
+a{
+    text-decoration: none;
+}
