@@ -38,11 +38,12 @@ def index():
     user_id = session["user_id"]
 
     stocks = db.execute(
-        "SELECT symbol, SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol",
+        "SELECT symbol, SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING total_shares > 0",
         user_id,
     )
 
-    user_cash = db.execute("SELECT cash FROM users WHERE id = ?", user_id)[0]["cash"]
+    user_data = db.execute("SELECT cash FROM users WHERE id = ?", user_id)
+    user_cash = user_data[0]["cash"] if user_data else 0.0
 
     total_value = user_cash
     portfolio = []
@@ -59,8 +60,8 @@ def index():
                 "price": quote["price"],
                 "total": holding_value
             })
-    return render_template("index.html",portfolio=portfolio, cash=user_cash, total_value=total_value)
 
+    return render_template("index.html", portfolio=portfolio, cash=user_cash, total=total_value)
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
