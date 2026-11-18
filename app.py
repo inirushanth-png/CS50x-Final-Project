@@ -216,14 +216,14 @@ def register():
         # Hash password
         hash_password = generate_password_hash(password)
 
-        # Insert user into database (handles duplicate usernames)
+        # Insert user into database (handles duplicate usernames using RuntimeError)
         try:
             new_user_id = db.execute(
                 "INSERT INTO users (username, hash) VALUES (?, ?)",
                 username,
                 hash_password,
             )
-        except ValueError:
+        except RuntimeError:
             return apology("username already exists", 400)
 
         # Remember which user has logged in
@@ -232,53 +232,6 @@ def register():
         # Redirect user to home page
         return redirect("/")
 
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("register.html")
-
-
-
-@app.route("/sell", methods=["GET", "POST"])
-@login_required
-def sell():
-    """Sell shares of stock"""
-    user_id = session["user_id"]
-
-    # User reached route via POST
-    if request.method == "POST":
-        symbol = request.form.get("symbol")
-        shares = request.form.get("shares")
-
-        if not symbol:
-            return apology("must select symbol", 400)
-        if not shares or not shares.isdigit() or int(shares) <= 0:
-            return apology("invalid number of shares", 400)
-
-        shares = int(shares)
-
-        # Check user shares
-        user_shares = db.execute(
-            "SELECT SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING symbol = ?",
-            user_id, symbol
-        )
-
-        if not user_shares or user_shares[0]["total_shares"] < shares:
-            return apology("you do not own that many shares", 400)
-
-        # Get current stock price
-        stock = lookup(symbol)
-        price = stock["price"]
-        total_sale = price * shares
-
-        # Update database...
-        # (உங்கள் டேட்டாபேஸ் இன்செர்ட் மற்றும் கேஷ் அப்டேட் கோடுகளை இங்கு தொடர்ந்து எழுதவும்)
-
-        return redirect("/")
-
     # User reached route via GET
     else:
-        stocks = db.execute(
-            "SELECT symbol, SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING total_shares > 0",
-            user_id
-        )
-        return render_template("sell.html", stocks=stocks)
+        return render_template("register.html")
