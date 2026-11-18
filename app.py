@@ -225,7 +225,6 @@ def register():
             )
         except ValueError:
             return apology("username already exists", 400)
-
         # Remember which user has logged in
         session["user_id"] = new_user_id
 
@@ -276,9 +275,9 @@ def sell():
         return redirect("/")
     else:
         stocks = db.execute(
-            "SELECT symbol, SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING total_shares > 0",
-             user_id,
-)
+        "SELECT symbol, SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING total_shares > 0",
+        user_id,
+    )
         return render_template("sell.html", stocks=stocks)
 
 
