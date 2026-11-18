@@ -21,20 +21,22 @@
                     <td class="text-start">{{ stock.symbol }}</td>
                     <td class="text-start">{{ stock.name }}</td>
                     <td class="text-end">{{ stock.shares }}</td>
-                    <td class="text-end">{{ stock.price | usd }}</td>
-                    <td class="text-end">{{ stock.total | usd }}</td>
+                    <td>{{ stock.price | usd }}</td>
+                    <td>{{ stock.total | usd }}</td>
                 </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
-                <td class="text-start" colspan="4">Cash</td>
-                <td class="text-end">{{ cash | usd }}</td>
-            </tr>
-            <tr>
-                <td class="text-start" colspan="4">TOTAL</td>
-                <td class="text-end">{{ total_value | usd }}</td>
-            </tr>
+    <td class="border-0" colspan="4"></td>
+    <td class="border-0 text-end">Cash</td>
+    <td class="border-0 text-start">{{ cash | usd }}</td>
+</tr>
+<tr>
+    <td class="border-0" colspan="4"></td>
+    <td class="border-0 text-end">TOTAL</td>
+    <td class="border-0 text-start">**{{ total | usd }}**</td>
+</tr>
         </tfoot>
     </table>
 {% endblock %}
