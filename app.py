@@ -107,6 +107,59 @@ def buy():
     else:
         return render_template("buy.html")
 
+@app.route("/sell", methods=["GET", "POST"])
+@login_required
+def sell():
+    """Sell shares of stock"""
+    user_id = session["user_id"]
+
+    if request.method == "POST":
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+
+        if not symbol:
+            return apology("must select symbol", 400)
+
+        try:
+            shares = int(shares)
+            if shares <= 0:
+                raise ValueError
+        except ValueError:
+            return apology("shares must be a positive integer", 400)
+
+        # Check user shares for this symbol
+        user_shares = db.execute(
+            "SELECT SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING symbol = ?",
+            user_id, symbol
+        )
+
+        if not user_shares or user_shares[0]["total_shares"] < shares:
+            return apology("you do not own that many shares", 400)
+
+        quote = lookup(symbol)
+        if not quote:
+            return apology("invalid symbol", 400)
+
+        sale_value = quote["price"] * shares
+
+        # 1. Update user's cash
+        db.execute("UPDATE users SET cash = cash + ? WHERE id = ?", sale_value, user_id)
+
+        # 2. Insert negative shares into transactions
+        db.execute(
+            "INSERT INTO transactions (user_id, symbol, shares, price) VALUES (?, ?, ?, ?)",
+            user_id, symbol, -shares, quote["price"]
+        )
+
+        return redirect("/")
+
+    else:
+        stocks = db.execute(
+            "SELECT symbol, SUM(shares) as total_shares FROM transactions WHERE user_id = ? GROUP BY symbol HAVING total_shares > 0",
+            user_id
+        )
+        return render_template("sell.html", stocks=stocks)
+
 
 @app.route("/history")
 @login_required
@@ -188,35 +241,50 @@ def quote():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
+    # Forget any user_id
     session.clear()
 
+    # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
+        # Ensure username was submitted
         if not username:
             return apology("must provide username", 400)
+
+        # Ensure password was submitted
         elif not password:
             return apology("must provide password", 400)
+
+        # Ensure confirmation was submitted
         elif not confirmation:
             return apology("must provide password confirmation", 400)
+
+        # Ensure passwords match
         elif password != confirmation:
             return apology("passwords must match", 400)
 
+        # Hash password
         hash_password = generate_password_hash(password)
 
+        # Insert user into database, handling both ValueError and RuntimeError for duplicates
         try:
             new_user_id = db.execute(
                 "INSERT INTO users (username, hash) VALUES (?, ?)",
                 username,
                 hash_password,
             )
-        except ValueError:
+        except (ValueError, RuntimeError):
             return apology("username already exists", 400)
 
+        # Remember which user has logged in
         session["user_id"] = new_user_id
+
+        # Redirect user to home page
         return redirect("/")
 
+    # User reached route via GET
     else:
         return render_template("register.html")
