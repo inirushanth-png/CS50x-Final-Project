@@ -225,6 +225,7 @@ def register():
             )
         except ValueError:
             return apology("username already exists", 400)
+        
         # Remember which user has logged in
         session["user_id"] = new_user_id
 
