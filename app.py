@@ -63,6 +63,7 @@ def index():
 
     return render_template("index.html", portfolio=portfolio, cash=user_cash, total=total_value)
 
+
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
@@ -107,6 +108,7 @@ def buy():
 
     else:
         return render_template("buy.html")
+
 
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
@@ -166,8 +168,9 @@ def sell():
 @login_required
 def history():
     """Show history of transactions"""
-    user_id =session["user_id"]
-    transactions = db.execute("SELECT symbol, shares, price, timestamp FROM transactions WHERE user_id = ? ORDER BY timestamp DESC", user_id)
+    user_id = session["user_id"]
+    transactions = db.execute(
+        "SELECT symbol, shares, price, timestamp FROM transactions WHERE user_id = ? ORDER BY timestamp DESC", user_id)
     return render_template("history.html", transactions=transactions)
 
 
