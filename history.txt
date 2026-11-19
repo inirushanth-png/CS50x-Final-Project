@@ -1,0 +1,17 @@
+Addition: 3.00, 5.00 -> Result: 8.00
+Power: 4.00, 2.00 -> Result: 16.00
+Addition: 3.00, 4.00 -> Result: 7.00
+Subtraction: 4.00, 3.00 -> Result: 1.00
+Multiplication: 4.00, 3.00 -> Result: 12.00
+Division: 4.00, 2.00 -> Result: 2.00
+Power: 2.00, 2.00 -> Result: 4.00
+Square Root of 4.00 -> Result: 2.00
+Square Root of 3.00 -> Result: 1.73
+Division: 99.00, 99.00 -> Result: 1.00
+Division: 7.00, 3.00 -> Result: 2.33
+Addition: 12.00, 8.00 -> Result: 20.00
+Power: 2.00, 3.00 -> Result: 8.00
+Square Root of 25.00 -> Result: 5.00
+Addition: 12.00, 8.00 -> Result: 20.00
+Power: 2.00, 3.00 -> Result: 8.00
+Square Root of 25.00 -> Result: 5.00
